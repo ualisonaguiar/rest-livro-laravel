@@ -1,0 +1,29 @@
+services:
+  web-laravel:
+    build: .
+    container_name: web-laravel
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/html
+    networks:
+      - curso-laravel      
+    depends_on:
+      - db-laravel
+
+  db-laravel:
+    container_name: db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /data/postgres
+    networks:
+      - curso-laravel
+    ports:
+      - ${DB_PORT}:5432
+
+networks:
+  curso-laravel:
+    driver: bridge
