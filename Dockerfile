@@ -1,22 +1,25 @@
 # Usar imagem oficial do PHP com Apache
 FROM php:8.3-apache
 
-RUN apt update && apt install -y git libpq-dev
+RUN apt update && apt install -y \
+    git \
+    libpq-dev \
+    zip \
+    unzip \
+    libzip-dev
 
-# Habilitar módulos necessários do Apache
-RUN docker-php-ext-install mysqli pdo pdo_mysql pdo_pgsql \
+# Instalar extensões PHP
+RUN docker-php-ext-install mysqli pdo pdo_mysql pdo_pgsql zip \
     && docker-php-ext-enable pdo_mysql pdo_pgsql
 
-RUN a2enmod headers
+# Habilitar módulos necessários do Apache
+RUN a2enmod headers rewrite
 
-# Copiando o arquivo de configuração do Apache
+# Copiar config do Apache
 COPY docker/apache/apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Ativar mod_rewrite (muito usado em frameworks PHP)
-RUN a2enmod rewrite
+# Ajustar permissões para diretório storage
+RUN mkdir -p /var/www/html/storage \
+    && chown -R www-data:www-data /var/www/html/storage
 
-RUN mkdir -p /var/www/html/storage
-RUN chown -R www-data:www-data /var/www/html/storage
-
-# Expor a porta padrão do Apache
 EXPOSE 80
