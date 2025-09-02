@@ -6,13 +6,16 @@ use App\Http\Requests\StoreLivroRequest;
 use App\Http\Requests\UpdateLivroRequest;
 use App\Services\LivroServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class LivroController extends Controller
 {
     public function __construct(private LivroServiceInterface $service) {}
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        //dd($filters = $request->all());
+
         return response()->json($this->service->listagem());
     }
 
