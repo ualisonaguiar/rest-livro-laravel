@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreLivroRequest extends FormRequest
+class LivroRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -61,26 +61,5 @@ class StoreLivroRequest extends FormRequest
     protected function failedValidation(Validator $validator):void
     {
         throw new HttpResponseException(response()->json($validator->errors(), 422));
-    }
-
-    protected function withValidator(Validator $validator): void
-    {
-        $validator->after(function ($validator) {
-            $this->withValidatorDtLancamento($validator);
-            $this->withValidatorNuQuantidade($validator);
-        });
-    }
-
-    protected function withValidatorDtLancamento(Validator $validator): void {
-        $dtLancamento = Carbon::createFromFormat('Y-m-d', $this->dt_lancamento);
-        if ($dtLancamento->gt(Carbon::now())) {
-            $validator->errors()->add('dt_lancamento', 'A data de lançamento não pode ser superior.');
-        }
-    }
-
-    protected function withValidatorNuQuantidade(Validator $validator): void {
-        if ($this->nu_quantidade < 0) {
-            $validator->errors()->add('nu_quantidade', 'A quantidade não poder ser inferior a 0.');
-        }
     }
 }

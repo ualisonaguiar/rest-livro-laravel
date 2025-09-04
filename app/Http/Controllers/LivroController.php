@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLivroRequest;
-use App\Http\Requests\UpdateLivroRequest;
+use App\Http\Requests\LivroRequest;
 use App\Services\LivroServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +21,7 @@ class LivroController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLivroRequest $request)
+    public function store(LivroRequest $request)
     {
         return response()->json($this->service->store($request->validated()));
     }
@@ -38,7 +37,7 @@ class LivroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UpdateLivroRequest $request, $id)
+    public function edit(LivroRequest $request, $id)
     {
         return response()->json($this->service->update($request->validated(), $id));
     }
