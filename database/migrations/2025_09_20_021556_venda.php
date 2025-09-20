@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_usuario', function (Blueprint $table) {
+        Schema::create('tb_venda', function (Blueprint $table) {
             $table->id();
-            $table->string('ds_nome', 150);
-            $table->string('ds_email', 150)->unique();
-            $table->string('ds_senha', 60);
+            $table->foreignId('livro_id')
+                ->references('id')
+                ->on('tb_livro')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->float('nu_preco');
+            $table->integer('nu_quantidade');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_usuario');
+        Schema::dropIfExists('tb_venda');
     }
 };

@@ -4,13 +4,14 @@ namespace App\Services;
 
 use App\Models\Livro;
 use App\Repositories\LivroRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class LivroService implements LivroServiceInterface
 {
     public function __construct(private LivroRepositoryInterface $repository) {}
 
-    public function listagem() {
-        return $this->repository->listagem();
+    public function listagem(array $filters): LengthAwarePaginator {
+        return $this->repository->listagem($filters);
     }
 
     public function store(array $data): Livro {

@@ -1,9 +1,7 @@
 <?php
 
-use App\Providers\AppServiceProvider;
-use App\Providers\LivroProvider;
-
 return [
-    AppServiceProvider::class,
-    LivroProvider::class,
+    App\Providers\AppServiceProvider::class,
+    App\Providers\LivroProvider::class,
+    App\Providers\VendaServiceProvider::class,
 ];
