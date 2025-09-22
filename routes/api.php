@@ -26,4 +26,7 @@ Route::prefix('/livros')->controller(LivroController::class)->group(function() {
 
 Route::prefix('/vendas')->controller(VendaController::class)->group(function() {
     Route::get('/', 'listagem');
+    Route::post('/', 'store');
+    Route::put('/{id}', 'edit');
+    Route::delete('/{id}', 'destroy');
 });

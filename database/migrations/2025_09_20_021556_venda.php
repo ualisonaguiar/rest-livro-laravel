@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tb_venda', function (Blueprint $table) {
             $table->id();
+            $table->string('nu_cpf', 11);
             $table->foreignId('livro_id')
                 ->references('id')
                 ->on('tb_livro')

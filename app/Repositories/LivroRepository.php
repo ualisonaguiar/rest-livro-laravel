@@ -6,6 +6,7 @@ use App\Models\Livro;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class LivroRepository implements LivroRepositoryInterface
 {
@@ -68,14 +69,17 @@ class LivroRepository implements LivroRepositoryInterface
 
     private function applyOrdenacao(Builder $query, array $filters): void
     {
-        $allowedSorts = (new Livro())->getFillable();
+        $allowedSorts  = (new Livro())->getFillable();
         $allowedOrders = ['asc', 'desc'];
 
-        if (in_array($filters['sort'], $allowedSorts) && in_array($filters['order'], $allowedOrders)) {
-            $sort = $filters['sort'];
-            $order = Str::lower($filters['order']);
-        } else {
-            $sort  = 'dt_lancamento';
+        $sort  = Arr::get($filters, 'sort', 'dt_lancamento');
+        $order = Str::lower(Arr::get($filters, 'order', 'asc'));
+
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'dt_lancamento';
+        }
+
+        if (!in_array($order, $allowedOrders)) {
             $order = 'asc';
         }
 
