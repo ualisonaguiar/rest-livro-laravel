@@ -13,9 +13,7 @@ class LivroController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        //dd($filters = $request->all());
-
-        return response()->json($this->service->listagem());
+        return response()->json($this->service->listagem($request->query()));
     }
 
     /**
