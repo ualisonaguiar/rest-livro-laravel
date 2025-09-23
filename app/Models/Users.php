@@ -49,4 +49,11 @@ class Users extends Authenticatable implements JWTSubject
     {
         return $this->ds_senha;
     }
+
+    protected function casts(): array
+    {
+        return [
+            'ds_senha' => 'hashed',
+        ];
+    }
 }

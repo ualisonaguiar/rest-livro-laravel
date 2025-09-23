@@ -27,8 +27,6 @@ class AuthController extends Controller
             'password' => $credentials['password'],
         ]);
 
-        
-
 
         if (!$token) {
             return response()->json([
@@ -37,15 +35,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'user' => auth()->user(),
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-                'expires_in' => auth('api')->factory()->getTTL() * 60,
-            ]
-        ]);
+        return response()->json($this->respondWithToken($token));
     }
 
     public function register(UsersRequest $request)
@@ -71,24 +61,30 @@ class AuthController extends Controller
 
     public function logout()
     {
-        try {
-            JWTAuth::invalidate(JWTAuth::getToken());
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to logout, please try again'], 500);
-        }
+        auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User logout successfully',
+        ]);
     }
 
     public function refresh()
     {
-        return response()->json([
-            'status' => 'success',
-            'user' => Auth::user(),
-            'authorization' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
-        ]);
+        return response()->json($this->respondWithToken(auth()->refresh()));
+    }
+
+    public function profile()
+    {
+        return response()->json($this->respondWithToken(auth()->user()));
+    }
+
+    protected function respondWithToken($token)
+    {
+        return [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ];
     }
 }

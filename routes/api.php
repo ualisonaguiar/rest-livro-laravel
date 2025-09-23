@@ -33,12 +33,21 @@ Route::prefix('/vendas')->controller(VendaController::class)->group(function () 
     Route::delete('/{id}', 'destroy');
 });
 
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-});
+// Route::controller(AuthController::class)->group(function () {
+//     Route::post('login', 'login');
+// });
 
+// Route::middleware('api')->get('/user', function(Request $request) {
+//     return $request->user('api');
+// });
 
-Route::middleware('api')->get('/user', function(Request $request) {
-    return $request->user();
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
+    Route::get('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api');
+    Route::get('/profile', [AuthController::class, 'profile'])->middleware('auth:api');
 });
