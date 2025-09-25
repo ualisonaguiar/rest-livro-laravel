@@ -63,7 +63,7 @@ class LivroRepository implements LivroRepositoryInterface
     private function filterOperadorLike(Builder $query, string $nomeCampo, array $filters): void
     {
         if (isset($filters[$nomeCampo])) {
-            $query->when($filters[$nomeCampo], fn($q) => $q->where($nomeCampo, 'like', "%{$filters[$nomeCampo]}%"));
+            $query->when($filters[$nomeCampo], fn($q) => $q->where($nomeCampo, 'ilike', "%{$filters[$nomeCampo]}%"));
         }
     }
 
