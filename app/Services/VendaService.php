@@ -30,7 +30,7 @@ class VendaService implements VendaServiceInterface
             $venda = $this->prepareEntityVenda($data, $livro);
             $venda->save();
 
-            $this->livroService->ajustarEstoque($livro, $data['nu_quantidade']);
+            $this->livroService->realizarBaixaEstoque($livro->id, $data['nu_quantidade']);
 
             return $venda;
         });
