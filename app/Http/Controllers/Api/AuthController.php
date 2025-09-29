@@ -4,18 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
-use App\Http\Requests\UsersRequest;
-use App\Models\Users;
-use Illuminate\Http\JsonResponse;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Auth;
-use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register',]]);
+        $this->middleware('auth:api', ['except' => ['login',]]);
     }
 
     public function login(AuthLoginRequest $request)
@@ -27,64 +23,40 @@ class AuthController extends Controller
             'password' => $credentials['password'],
         ]);
 
+        try {
+            if (!$token) {
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
 
-        if (!$token) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
+            return $this->respondWithToken($token);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not create token'], 500);
         }
-
-        return response()->json($this->respondWithToken($token));
     }
 
-    public function register(UsersRequest $request)
+    public function me()
     {
-        $user = Users::create([
-            'ds_nome' => $request->ds_nome,
-            'ds_email' => $request->ds_email,
-            'ds_senha' => sha1($request->ds_senha),
-        ]);
-
-        $token = Auth::login($user);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+        return response()->json(auth()->user());
     }
 
     public function logout()
     {
         auth()->logout();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User logout successfully',
-        ]);
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
     public function refresh()
     {
-        return response()->json($this->respondWithToken(auth()->refresh()));
-    }
-
-    public function profile()
-    {
-        return response()->json($this->respondWithToken(auth()->user()));
+        return $this->respondWithToken(auth()->refresh());
     }
 
     protected function respondWithToken($token)
     {
-        return [
+        return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
-        ];
+        ]);
     }
 }

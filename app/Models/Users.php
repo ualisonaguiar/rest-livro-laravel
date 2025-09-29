@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Users extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;
+    use Notifiable;
 
     protected $table = 'tb_usuario';
 
@@ -42,7 +41,7 @@ class Users extends Authenticatable implements JWTSubject
 
     public function getAuthIdentifierName()
     {
-        return 'ds_email';
+        return 'id';
     }
 
     public function getAuthPassword()
