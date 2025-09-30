@@ -9,6 +9,7 @@ interface VendaServiceInterface {
 
     public function listagem(array $filters): LengthAwarePaginator;
     public function registrarCompra(array $data): Venda;
+    public function getById(int $id): Venda;
     public function atualizarCompra(int $idCompra, array $data): Venda;
     public function excluirCompra(int $idCompra): Venda;
 }

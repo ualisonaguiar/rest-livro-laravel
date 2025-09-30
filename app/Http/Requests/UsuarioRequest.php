@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UsersRequest extends FormRequest
+class UsuarioRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class UsersRequest extends FormRequest
     {
         return [
             'ds_nome'     => 'required|string|max:150',
-            'ds_email'    => 'required|string|email|max:150',
-            'ds_senha'    => 'required|string|max:60',
+            'ds_email' => 'required|string|email|max:150|unique:tb_usuario,ds_email',
         ];
     }
 
@@ -41,10 +40,7 @@ class UsersRequest extends FormRequest
             'ds_email.string'         => 'E-mail deve ser um texto.',
             'ds_email.max'            => 'O e-mail não pode ter mais de 60 caracteres.',
             'ds_email.email'          => 'O e-mail inválido.',
-
-            'ds_senha.required'      => 'A senha é obrigatório.',
-            'ds_senha.string'        => 'A senha deve ser um texto.',
-            'ds_senha.max'           => 'A senha não pode ter mais de 60 caracteres.',
+            'ds_email.unique'         => 'Este e-mail já está sendo utilizado.',
         ];
     }
 

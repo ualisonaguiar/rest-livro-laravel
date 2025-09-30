@@ -21,6 +21,11 @@ class VendaService implements VendaServiceInterface
         return $this->repository->listagem($filters);
     }
 
+    public function getById(int $id): Venda
+    {
+        return Venda::findOrFail($id);
+    }
+
     public function registrarCompra(array $data): Venda
     {
         return DB::transaction(function () use ($data) {

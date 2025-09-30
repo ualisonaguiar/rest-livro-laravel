@@ -49,6 +49,16 @@ class Users extends Authenticatable implements JWTSubject
         return $this->ds_senha;
     }
 
+    public function getEmail(): String
+    {
+        return $this->ds_email;
+    }
+
+    public function getNome(): String
+    {
+        return $this->ds_nome;
+    }
+
     protected function casts(): array
     {
         return [

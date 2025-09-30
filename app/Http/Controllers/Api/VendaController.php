@@ -14,7 +14,7 @@ class VendaController extends Controller
         private VendaServiceInterface $service
     ) {}
 
-    public function listagem(Request $request): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         return response()->json($this->service->listagem($request->query()));
     }
@@ -28,6 +28,17 @@ class VendaController extends Controller
         } catch (\Exception $ex) {
             return $this->errorResponse('inserir', $ex, 404);
         }
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        try {
+            $json = response()->json($this->service->getById($id));
+        } catch (\Exception $ex) {
+            $json = $this->errorResponse('buscar', $ex, 404);
+        }
+
+        return $json;
     }
 
     public function update(VendaRequest $request, int $idLivro): JsonResponse
