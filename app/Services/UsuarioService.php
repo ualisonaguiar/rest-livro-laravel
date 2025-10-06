@@ -2,13 +2,12 @@
 
 namespace App\Services;
 
-use App\Mail\UsuarioRegistradoMail;
+use App\Jobs\EnvioEmailCadastroUsuarioJob;
 use App\Models\Users;
 use App\Repositories\UsuarioRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class UsuarioService implements UsuarioServiceInterface
@@ -28,7 +27,8 @@ class UsuarioService implements UsuarioServiceInterface
             $data['ds_senha'] = $senha['hash'];
 
             $usuario = Users::create($data);
-            $this->enviarEmailCadastro($usuario, $senha['senha']);
+
+            EnvioEmailCadastroUsuarioJob::dispatch($usuario, $senha['senha']);
 
             return $usuario;
         });
@@ -41,10 +41,5 @@ class UsuarioService implements UsuarioServiceInterface
             'senha' => $senha,
             'hash' => Hash::make($senha)
         ];
-    }
-
-    private function enviarEmailCadastro(Users $usuario, string $senha): void
-    {
-        Mail::to($usuario->getEmail())->send(new UsuarioRegistradoMail($usuario, $senha));
     }
 }

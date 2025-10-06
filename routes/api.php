@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CepController;
 use App\Http\Controllers\Api\LivroController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\UsuarioController;
@@ -22,6 +23,8 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::get('refresh', 'refresh');
         Route::get('profile', 'profile');
     });
+
+    Route::get('/busca-cep/{cep}', [CepController::class, 'buscarCep']);
 
     Route::apiResource('usuario', UsuarioController::class);
     Route::apiResource('livros', LivroController::class);

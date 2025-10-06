@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\BusinessRuleException;
+use App\Jobs\BuscaCepVendaEntrega;
 use App\Repositories\VendaRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Models\Venda;
@@ -37,6 +38,9 @@ class VendaService implements VendaServiceInterface
 
             $this->livroService->realizarBaixaEstoque($livro->id, $data['nu_quantidade']);
 
+            $data['venda_id'] = $venda->id;
+            BuscaCepVendaEntrega::dispatch($data);
+
             return $venda;
         });
     }
@@ -62,6 +66,9 @@ class VendaService implements VendaServiceInterface
 
             $venda->nu_quantidade = $data['nu_quantidade'];
             $venda->save();
+
+            $data['venda_id'] = $venda->id;
+            BuscaCepVendaEntrega::dispatch($data);
 
             return $venda;
         });

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_livro', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('no_nome', 100);
-            $table->string('no_autor', 150);
-            $table->integer('nu_quantidade');
-            $table->float('nu_preco');
-            $table->date('dt_lancamento');
-            $table->timestamps();
+            $table->string('queue')->index();
+            $table->longText('payload');
+            $table->unsignedTinyInteger('attempts');
+            $table->unsignedInteger('reserved_at')->nullable();
+            $table->unsignedInteger('available_at');
+            $table->unsignedInteger('created_at');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_livro');
+        Schema::dropIfExists('jobs');
     }
 };

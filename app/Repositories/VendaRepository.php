@@ -10,7 +10,7 @@ class VendaRepository implements VendaRepositoryInterface
 {
     public function listagem(array $filters): LengthAwarePaginator
     {
-        $query = Venda::with('livro');
+        $query = Venda::with(['livro', 'livroEntrega']);
 
         $this->filterByCpf($query, $filters);
 

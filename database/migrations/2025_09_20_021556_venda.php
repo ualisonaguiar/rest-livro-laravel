@@ -12,16 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_venda', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('nu_cpf', 11);
+            $table->float('nu_preco');
+            $table->integer('nu_quantidade');
+            $table->timestamps();
+
             $table->foreignId('livro_id')
                 ->references('id')
                 ->on('tb_livro')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->float('nu_preco');
-            $table->integer('nu_quantidade');
-            $table->timestamps();
         });
     }
 

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\VendaRepository;
 use App\Repositories\VendaRepositoryInterface;
+use App\Services\VendaEntregaInterface;
+use App\Services\VendaEntregaService;
 use App\Services\VendaService;
 use App\Services\VendaServiceInterface;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +19,8 @@ class VendaServiceProvider extends ServiceProvider
     {
         $this->app->bind(VendaServiceInterface::class, VendaService::class);
         $this->app->bind(VendaRepositoryInterface::class, VendaRepository::class);
+
+        $this->app->bind(VendaEntregaInterface::class, VendaEntregaService::class);
     }
 
     /**

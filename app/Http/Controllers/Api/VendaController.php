@@ -41,21 +41,20 @@ class VendaController extends Controller
         return $json;
     }
 
-    public function update(VendaRequest $request, int $idLivro): JsonResponse
+    public function update(VendaRequest $request, int $idVenda): JsonResponse
     {
         try {
-            $venda = $this->service->atualizarCompra($idLivro, $request->validated());
-
+            $venda = $this->service->atualizarCompra($idVenda, $request->validated());
             return response()->json($venda);
         } catch (\Exception $ex) {
             return $this->errorResponse('atuaizar', $ex, 404);
         }
     }
 
-    public function destroy(int $idLivro): JsonResponse
+    public function destroy(int $idVenda): JsonResponse
     {
         try {
-            $venda = $this->service->excluirCompra($idLivro);
+            $venda = $this->service->excluirCompra($idVenda);
 
             return response()->json($venda);
         } catch (\Exception $ex) {
