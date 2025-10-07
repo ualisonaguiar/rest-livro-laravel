@@ -14,7 +14,8 @@ class VendaService implements VendaServiceInterface
 {
     public function __construct(
         private VendaRepositoryInterface $repository,
-        private LivroServiceInterface $livroService
+        private LivroServiceInterface $livroService,
+        private VendaEntregaInterface $vendaEntregaService
     ) {}
 
     public function listagem(array $filters): LengthAwarePaginator

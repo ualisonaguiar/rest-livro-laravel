@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\CompraRealizadaEvent;
 use App\Models\VendaEntrega;
 use Illuminate\Support\Facades\DB;
 
@@ -9,12 +10,12 @@ class VendaEntregaService implements VendaEntregaInterface
 {
     public function __construct(private CepService $cepService) {}
 
-    public function cadastrar(array $data): VendaEntrega
+    public function salvar(array $data): VendaEntrega
     {
         return DB::transaction(function () use ($data) {
             $dadosCep = $this->cepService->buscarCep($data['nu_cep']);
             
-            $dataVendEntrega = [
+            $dataVendaEntrega = [
                 'venda_id' => $data['venda_id'],
                 'nu_cep' => $data['nu_cep'],
                 'ds_logradouro' => $dadosCep['logradouro'],
@@ -26,10 +27,14 @@ class VendaEntregaService implements VendaEntregaInterface
                 'ds_numero' => $data['ds_numero'],
             ];
 
-            return VendaEntrega::updateOrCreate(
+            $vendaEntrega = VendaEntrega::updateOrCreate(
                 ['venda_id' => $data['venda_id']],
-                $dataVendEntrega
+                $dataVendaEntrega
             );
+
+            event(new CompraRealizadaEvent($vendaEntrega));
+
+            return $vendaEntrega;
         });
     }
 }

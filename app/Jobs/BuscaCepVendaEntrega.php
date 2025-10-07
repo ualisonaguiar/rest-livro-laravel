@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Services\VendaEntregaInterface;
-use App\Services\VendaEntregaService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +27,7 @@ class BuscaCepVendaEntrega implements ShouldQueue
     {
         Log::info("Buscando CEP: " . $this->data['nu_cep']);
         try {
-            $serviceVendaEntrega->cadastrar($this->data);
+            $serviceVendaEntrega->salvar($this->data);
         } catch (Throwable $exception) {
             Log::error("Failed search CEP: " . $this->data['nu_cep']);
             throw $exception;
