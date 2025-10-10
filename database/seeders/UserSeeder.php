@@ -18,5 +18,11 @@ class UserSeeder extends Seeder
             'ds_email' => 'ualison.aguiar@gmail.com',
             'ds_senha' => Hash::make('abcd1234'),
         ]);
+
+        Users::updateOrInsert([
+            'ds_nome'  => fake()->name(),
+            'ds_email' => fake()->email(),
+            'ds_senha' => Hash::make(fake()->password()),
+        ]);
     }
 }
