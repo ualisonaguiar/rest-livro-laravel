@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tb_venda', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nu_cpf', 11);
             $table->float('nu_preco');
             $table->integer('nu_quantidade');
             $table->timestamps();
@@ -21,6 +20,12 @@ return new class extends Migration
             $table->foreignId('livro_id')
                 ->references('id')
                 ->on('tb_livro')
+                ->constrained()
+                ->onDelete('cascade');
+
+            $table->foreignId('usuario_id')
+                ->references('id')
+                ->on('tb_usuario')
                 ->constrained()
                 ->onDelete('cascade');
         });

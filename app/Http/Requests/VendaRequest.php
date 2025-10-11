@@ -19,7 +19,6 @@ class VendaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nu_cpf'         => 'required|string|min:11|max:11',
             'livro_id'       => 'required|integer',
             'nu_quantidade'  => 'required|integer|min:1',
             'nu_cep'         => 'required|digits:8',
@@ -31,9 +30,6 @@ class VendaRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nu_cpf.required'           => 'CPF é obrigatório.',
-            'nu_cpf.min'                => 'CPF inválido',
-
             'livro_id.required'         => 'Livro não encontrado',
 
             'nu_quantidade.required'    => 'Quantidade é obrigatória',

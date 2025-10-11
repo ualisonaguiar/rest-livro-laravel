@@ -14,7 +14,7 @@ class Venda extends Model
     protected $table = 'tb_venda';
 
     protected $fillable = [
-        'nu_cpf',
+        'usuario_id',
         'livro_id',
         'nu_preco',
         'nu_quantidade',
@@ -28,5 +28,10 @@ class Venda extends Model
     public function livroEntrega()
     {
         return $this->hasOne(VendaEntrega::class, 'venda_id');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Users::class, 'usuario_id');
     }
 }

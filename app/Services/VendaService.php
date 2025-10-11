@@ -35,6 +35,7 @@ class VendaService implements VendaServiceInterface
             $this->validarQuantidadeDisponivel($livro, $data['nu_quantidade']);
 
             $venda = $this->prepareEntityVenda($data, $livro);
+            $venda->usuario_id = auth()->user()->id;
             $venda->save();
 
             $this->livroService->realizarBaixaEstoque($livro->id, $data['nu_quantidade']);
@@ -94,7 +95,6 @@ class VendaService implements VendaServiceInterface
     private function prepareEntityVenda(array $data, Livro $livro): Venda
     {
         $venda = new Venda();
-        $venda->nu_cpf = $data['nu_cpf'];
         $venda->livro_id = $livro->id;
         $venda->nu_preco = $livro->nu_preco;
         $venda->nu_quantidade = $data['nu_quantidade'];
