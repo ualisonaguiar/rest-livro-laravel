@@ -14,8 +14,7 @@ class VendaService implements VendaServiceInterface
 {
     public function __construct(
         private VendaRepositoryInterface $repository,
-        private LivroServiceInterface $livroService,
-        private VendaEntregaInterface $vendaEntregaService
+        private LivroServiceInterface $livroService
     ) {}
 
     public function listagem(array $filters): LengthAwarePaginator
@@ -25,7 +24,9 @@ class VendaService implements VendaServiceInterface
 
     public function getById(int $id): Venda
     {
-        return Venda::findOrFail($id);
+        $query = Venda::with(['livro', 'livroEntrega', 'usuario']);
+
+        return $query->findOrFail($id);
     }
 
     public function registrarCompra(array $data): Venda
@@ -52,10 +53,6 @@ class VendaService implements VendaServiceInterface
         return DB::transaction(function () use ($idCompra, $data) {
             $venda = $this->repository->getById($idCompra);
             $livro = Livro::lockForUpdate()->findOrFail($venda->livro->id);
-
-            if ($data['nu_quantidade'] == $venda->nu_quantidade) {
-                throw new BusinessRuleException('Quantidade solicitada é a mesma presente na venda.');
-            }
 
             $diferenca = $data['nu_quantidade'] - $venda->nu_quantidade;
 

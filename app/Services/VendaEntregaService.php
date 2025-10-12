@@ -14,7 +14,7 @@ class VendaEntregaService implements VendaEntregaInterface
     {
         return DB::transaction(function () use ($data) {
             $dadosCep = $this->cepService->buscarCep($data['nu_cep']);
-            
+
             $dataVendaEntrega = [
                 'venda_id' => $data['venda_id'],
                 'nu_cep' => $data['nu_cep'],
@@ -33,7 +33,6 @@ class VendaEntregaService implements VendaEntregaInterface
             );
 
             event(new CompraRealizadaEvent($vendaEntrega));
-
             return $vendaEntrega;
         });
     }

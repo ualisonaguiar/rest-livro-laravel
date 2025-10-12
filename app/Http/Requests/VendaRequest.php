@@ -22,7 +22,7 @@ class VendaRequest extends FormRequest
             'livro_id'       => 'required|integer',
             'nu_quantidade'  => 'required|integer|min:1',
             'nu_cep'         => 'required|digits:8',
-            'ds_complemento' => 'string|max:100',
+            'ds_complemento' => 'max:100',
             'ds_numero'      => 'string|max:10',
         ];
     }

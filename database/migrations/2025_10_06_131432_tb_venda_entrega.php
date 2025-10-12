@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('venda_id')->unique();
             $table->string('nu_cep', 8);
             $table->string('ds_logradouro', 300);
-            $table->string('ds_complemento', 100);
+            $table->string('ds_complemento', 100)->nullable();
             $table->string('ds_bairro', 100);
             $table->integer('nu_ibge');
             $table->string('ds_municipio', 100);
