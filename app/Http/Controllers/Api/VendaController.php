@@ -26,7 +26,7 @@ class VendaController extends Controller
 
             return response()->json($venda);
         } catch (\Exception $ex) {
-            return $this->errorResponse('inserir', $ex, 404);
+            return $this->errorResponse('inserir', $ex, 500);
         }
     }
 
@@ -47,7 +47,7 @@ class VendaController extends Controller
             $venda = $this->service->atualizarCompra($idVenda, $request->validated());
             return response()->json($venda);
         } catch (\Exception $ex) {
-            return $this->errorResponse('atuaizar', $ex, 404);
+            return $this->errorResponse('atuaizar', $ex, 500);
         }
     }
 
@@ -55,10 +55,9 @@ class VendaController extends Controller
     {
         try {
             $venda = $this->service->excluirCompra($idVenda);
-
             return response()->json($venda);
         } catch (\Exception $ex) {
-            return $this->errorResponse('excluir', $ex, 404);
+            return $this->errorResponse('excluir', $ex, 500);
         }
     }
 

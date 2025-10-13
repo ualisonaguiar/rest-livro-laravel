@@ -22,7 +22,7 @@ class EnviarEmailFalhaJob implements ShouldQueue
     {
         $this->email = $email;
         $this->mailable = $mailable;
-        $this->onQueue('fila_falha_enviar_email');
+        $this->onQueue('falha_enviar_email');
     }
 
     /**
@@ -37,6 +37,7 @@ class EnviarEmailFalhaJob implements ShouldQueue
                 'erro' => $exception->getMessage(),
                 'trace' => $exception->getTraceAsString(),
             ]);
+            
             EnviarEmailFalhaJob::dispatch($this->email, $this->mailable);
         }
     }

@@ -3,37 +3,36 @@
 namespace App\Mail;
 
 use App\Models\Venda;
-use App\Models\VendaEntrega;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class CompraConfirmadaMail extends Mailable
+class CompraCanceladaMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private VendaEntrega $vendaEntrega;
+    /**
+     * Create a new message instance.
+     */
     private Venda $venda;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(VendaEntrega $vendaEntrega, Venda $venda)
+    public function __construct(Venda $venda)
     {
-        $this->vendaEntrega = $vendaEntrega;
         $this->venda = $venda;
     }
 
     public function build()
     {
-        Log::info("Enviando e-mail de compra realizada ao usuário");
+        Log::info("Enviando e-mail de cancelamento ao usuário");
 
-        return $this->subject('Confirmação da sua compra!')
-            ->view('emails.compras.confirmada')
+        return $this->subject('Confirmação de cancelamento da sua compra!')
+            ->view('emails.compras.cancelada')
             ->with([
                 'venda' => $this->venda,
-                'vendaEntrega' => $this->vendaEntrega,
             ]);
     }
 }

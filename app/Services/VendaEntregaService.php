@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Events\CompraRealizadaEvent;
-use App\Jobs\ProcessaEnviaNotaFiscalJob;
 use App\Models\VendaEntrega;
 use Illuminate\Support\Facades\DB;
 

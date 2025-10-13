@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\BusinessRuleException;
 use App\Models\Livro;
 use App\Repositories\LivroRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -44,12 +43,14 @@ class LivroService implements LivroServiceInterface
     public function realizarBaixaEstoque(int $id, int $quantidade): Livro
     {
         $livro = $this->getById($id);
-        if ($quantidade > $livro->nu_quantidade) {
-            throw new BusinessRuleException('Não há estoque suficiente para essa venda.');
-        }
+
+        // if ($quantidade > $livro->nu_quantidade) {
+        //     throw new BusinessRuleException('Não há estoque suficiente para essa venda.');
+        // }
 
         $livro->nu_quantidade -= $quantidade;
         $livro->save();
+
         return $livro;
     }
 }
