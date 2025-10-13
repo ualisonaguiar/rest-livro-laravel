@@ -9,8 +9,8 @@ RUN apt update && apt install -y \
     libzip-dev
 
 # Instalar extensões PHP
-RUN docker-php-ext-install mysqli pdo pdo_mysql pdo_pgsql zip \
-    && docker-php-ext-enable pdo_mysql pdo_pgsql
+RUN docker-php-ext-install mysqli pdo pdo_mysql pdo_pgsql zip sockets \
+    && docker-php-ext-enable pdo_mysql pdo_pgsql sockets
 
 # Habilitar módulos necessários do Apache
 RUN a2enmod headers rewrite

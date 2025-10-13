@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CepController;
 use App\Http\Controllers\Api\LivroController;
-use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\UsuarioController;
 use App\Http\Controllers\Api\VendaController;
 use Illuminate\Support\Facades\Route;

@@ -27,7 +27,7 @@ class CompraConfirmadaMail extends Mailable
 
     public function build()
     {
-        Log::info("Preparando o envio...");
+        Log::info("Enviando e-mail ao usuário");
 
         return $this->subject('Confirmação da sua compra!')
             ->view('emails.compras.confirmada')

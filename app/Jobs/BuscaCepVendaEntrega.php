@@ -18,7 +18,10 @@ class BuscaCepVendaEntrega implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private array $data) {}
+    public function __construct(private array $data)
+    {
+        $this->onQueue('fila_busca_cep');
+    }
 
     /**
      * Execute the job.

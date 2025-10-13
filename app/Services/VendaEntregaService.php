@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\CompraRealizadaEvent;
+use App\Jobs\ProcessaEnviaNotaFiscalJob;
 use App\Models\VendaEntrega;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +33,12 @@ class VendaEntregaService implements VendaEntregaInterface
                 $dataVendaEntrega
             );
 
+            //evento responsável por enviar e-mail ao usuario
             event(new CompraRealizadaEvent($vendaEntrega));
+
+            //emitir a nota fiscal
+            //ProcessaEnviaNotaFiscalJob::dispatch($vendaEntrega);
+
             return $vendaEntrega;
         });
     }
