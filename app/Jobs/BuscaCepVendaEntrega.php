@@ -20,7 +20,7 @@ class BuscaCepVendaEntrega implements ShouldQueue
      */
     public function __construct(private array $data)
     {
-        $this->onQueue('fila_busca_cep');
+        $this->onQueue('busca_cep');
     }
 
     /**
@@ -32,7 +32,11 @@ class BuscaCepVendaEntrega implements ShouldQueue
         try {
             $serviceVendaEntrega->salvar($this->data);
         } catch (Throwable $exception) {
-            Log::error("Failed search CEP: " . $this->data['nu_cep']);
+            Log::error('Failed search CEP: ' . $this->data['nu_cep'], [
+                'erro' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString(),
+            ]);
+
             throw $exception;
         }
     }

@@ -27,6 +27,7 @@ class EnvioEmailCadastroUsuarioJob implements ShouldQueue
     {
         $this->user = $user;
         $this->senha = $senha;
+        $this->onQueue('envio_email_cadastro_usuario');
     }
 
     /**
@@ -34,19 +35,24 @@ class EnvioEmailCadastroUsuarioJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::info("Process send mail: " . $this->user->getEmail());
-
         try {
-            Mail::to($this->user->getEmail())->send(new UsuarioRegistradoMail($this->user, $this->senha));
-        } catch (Throwable $exception) {
-            Log::error("Failed send mail: " . $this->user->getEmail());
+            Log::info("Process send mail: " . $this->user->getEmail());
+            $mailable = new UsuarioRegistradoMail($this->user, $this->senha);
 
-            throw $exception;
+            Mail::to($this->user->getEmail(), $this->user->getNome())->send($mailable);
+        } catch (Throwable $exception) {
+
+            Log::error('Falha ao enviar e-mail: ' . $this->user->getEmail(), [
+                'erro' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString(),
+            ]);
+            
+            EnviarEmailFalhaJob::dispatch($this->user->getEmail(), $mailable);
         }
     }
 
     public function failed(Throwable $exception): void
     {
-        Log::critical("Falha permanente no envio de e-mail para {$this->user->getEmail()}. Erro: " . $exception->getMessage());
+        Log::critical("Falha no envio de e-mail para {$this->user->getEmail()}. Erro: " . $exception->getMessage());
     }
 }

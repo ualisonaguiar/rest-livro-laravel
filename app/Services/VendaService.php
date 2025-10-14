@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Exceptions\BusinessRuleException;
+use App\Jobs\BaixaEstoqueJob;
 use App\Jobs\BuscaCepVendaEntrega;
+use App\Jobs\EnviarEmailCancelamentoJob;
 use App\Repositories\VendaRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Models\Venda;
@@ -61,7 +63,7 @@ class VendaService implements VendaServiceInterface
                 $this->validarQuantidadeDisponivel($livro, $diferenca);
             }
 
-            $this->ajustarEstoque($livro, $diferenca);
+            $this->livroService->realizarBaixaEstoque($venda->livro_id, $diferenca);
 
             $venda->nu_quantidade = $data['nu_quantidade'];
             $venda->save();
@@ -72,12 +74,17 @@ class VendaService implements VendaServiceInterface
             return $venda;
         });
     }
+
     public function excluirCompra(int $idCompra): Venda
     {
         return DB::transaction(function () use ($idCompra) {
             $venda = $this->repository->getById($idCompra);
-            $this->ajustarEstoque($venda->livro, -$venda->nu_quantidade);
+            $this->livroService->realizarBaixaEstoque($venda->livro_id, -$venda->nu_quantidade);
+
+            EnviarEmailCancelamentoJob::dispatch($venda);
+            
             $venda->delete();
+
             return $venda;
         });
     }
@@ -97,11 +104,5 @@ class VendaService implements VendaServiceInterface
         $venda->nu_quantidade = $data['nu_quantidade'];
 
         return $venda;
-    }
-
-    private function ajustarEstoque(Livro $livro, int $diferenca)
-    {
-        $livro->nu_quantidade -= $diferenca;
-        $livro->save();
     }
 }

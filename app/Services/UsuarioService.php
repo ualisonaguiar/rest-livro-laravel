@@ -16,8 +16,12 @@ class UsuarioService implements UsuarioServiceInterface
 
     public function listagem(array $filters = []): LengthAwarePaginator
     {
-
         return $this->repository->listagem($filters);
+    }
+
+    public function getById(int $id): Users
+    {
+        return Users::findOrFail($id);
     }
 
     public function store(array $data): Users
