@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoriaController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CepController;
 use App\Http\Controllers\Api\LivroController;
@@ -28,4 +29,5 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::apiResource('usuario', UsuarioController::class);
     Route::apiResource('livros', LivroController::class);
     Route::apiResource('vendas', VendaController::class);
+    Route::apiResource('categorias', CategoriaController::class);
 });

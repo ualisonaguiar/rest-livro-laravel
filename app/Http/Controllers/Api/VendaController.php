@@ -61,12 +61,4 @@ class VendaController extends Controller
             return $this->errorResponse('excluir', $ex, 404);
         }
     }
-
-    private function errorResponse(string $action, \Exception $ex, int $status = 500): JsonResponse
-    {
-        return response()->json([
-            'message' => "Erro ao {$action} a compra.",
-            'error'   => $ex->getMessage(),
-        ], $status);
-    }
 }
