@@ -43,8 +43,18 @@
             "@php artisan clear-compiled",
             "@php artisan package:discover --ansi"
         ],
+        "post-install-cmd": [
+            "mkdir -p storage/{framework, logs}",
+            "mkdir -p storage/framework/{cache,views,sessions}",
+            "mkdir -p bootstrap/cache",
+            "chown -R www-data:www-data storage bootstrap/cache"
+        ],          
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "mkdir -p storage/{framework, logs}",
+            "mkdir -p storage/framework/{cache,views,sessions}",
+            "mkdir -p bootstrap/cache",
+            "chown -R www-data:www-data storage bootstrap/cache"              
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
