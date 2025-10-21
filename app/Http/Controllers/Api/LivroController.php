@@ -72,12 +72,4 @@ class LivroController extends Controller
 
         return $json;
     }
-
-    private function errorResponse(string $action, \Exception $ex, int $status = 500): JsonResponse
-    {
-        return response()->json([
-            'message' => "Erro ao {$action} o livro.",
-            'error'   => $ex->getMessage(),
-        ], $status);
-    }
 }
