@@ -31,7 +31,7 @@ class CategoriaRequest extends FormRequest
                 'string',
                 'min:5',
                 'max:100',
-                Rule::unique('tb_categoria', 'no_categoria')->ignore($this->route('categoria')->id),
+                Rule::unique('tb_categoria', 'no_categoria'),
             ],
             'in_ativo' => [
                 'required',

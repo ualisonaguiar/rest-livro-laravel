@@ -47,5 +47,9 @@ class CategoriaService implements CategoriaServiceInterface
         if (isset($filters['no_categoria'])) {
             $query->where('no_categoria', 'like', '%' . $filters['no_categoria'] . '%');
         }
+
+        if (isset($filters['in_ativo'])) {
+            $query->where('in_ativo', '=', $filters['in_ativo']);
+        }
     }
 }

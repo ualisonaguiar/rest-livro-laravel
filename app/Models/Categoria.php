@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
 {
-    const STATUS_ATIVO = 'Ativo';
-    const STATUS_INATIVO = 'Inativo';
+    const STATUS_ATIVO = 'ATIVO';
+    const STATUS_INATIVO = 'INATIVO';
 
 
     protected $table = 'tb_categoria';
