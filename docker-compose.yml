@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/var/www/html
     networks:
-      - curso-laravel      
+      - curso-laravel
     depends_on:
       - db-laravel
 
